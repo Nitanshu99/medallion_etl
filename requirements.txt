@@ -1,0 +1,8 @@
+pandas
+numpy
+pyarrow
+azure-storage-blob
+azure-identity
+dagster
+dagster-webserver
+python-dotenv
