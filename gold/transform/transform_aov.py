@@ -31,8 +31,8 @@ def calculate_aov_by_store_month(orders_df, stores_df):
 
     # Join with stores_df to add the store_name for user-friendliness
     final_aov = aov.merge(
-        stores_df[['store_id', 'name']], 
-        on='store_id', 
+        stores_df[['store_id', 'name']],
+        on='store_id',
         how='left'
     )
 

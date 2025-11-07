@@ -27,15 +27,15 @@ def calculate_orders_ticket_summary(orders_df, tickets_df, customers_df, stores_
 
     # 5. Join with customers_df to get customer_name
     base_df = base_df.merge(
-        customers_df[['customer_id', 'name']], 
-        on='customer_id', 
+        customers_df[['customer_id', 'name']],
+        on='customer_id',
         how='left'
     ).rename(columns={'name': 'customer_name'})
 
     # 6. Join with stores_df to get store_name
     base_df = base_df.merge(
-        stores_df[['store_id', 'name']], 
-        on='store_id', 
+        stores_df[['store_id', 'name']],
+        on='store_id',
         how='left'
     ).rename(columns={'name': 'store_name'})
 

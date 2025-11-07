@@ -32,14 +32,14 @@ def main():
 
     # Objective 1: Calculate AOV
     aov_table = calculate_aov_by_store_month(
-        silver_data['orders'], 
+        silver_data['orders'],
         silver_data['stores']
     )
 
     # Objective 2: Calculate Ticket Summary
     ticket_summary_table = calculate_orders_ticket_summary(
-        silver_data['orders'], 
-        silver_data['support_tickets'], 
+        silver_data['orders'],
+        silver_data['support_tickets'],
         silver_data['customers'],
         silver_data['stores']
     )
