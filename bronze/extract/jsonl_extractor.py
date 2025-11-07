@@ -33,8 +33,8 @@ def download_azure_jsonl(url: str, local_directory: str = "./data"):
         blob_data = blob_client.download_blob().readall()
         # Save locally
         local_path = os.path.join(local_directory, blob.name)
-        with open(local_path, 'wb') as f:
-            f.write(blob_data)
+        with open(local_path, 'wb') as output_file:
+            output_file.write(blob_data)
         print(f"Saved: {local_path}")
 
 
