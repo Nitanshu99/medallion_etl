@@ -1,37 +1,26 @@
-"""This module provides functionality to extract data from CSV files."""
-import os
+"""Extracts CSV files from a GitHub repository and saves them locally."""
+
 from pathlib import Path
-import pandas as pd
+import requests
 
-# Get the project root (medallion_etl)
-project_root = Path(__file__).resolve().parents[2]
-os.chdir(project_root)
+API_URL = "https://api.github.com/repos/dbt-labs/jaffle-shop-data/contents/jaffle-data"
+OUTPUT_DIR = Path(__file__).parent.parent.parent / "data" / "bronze" / "raw" / "local"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-# Reads "data/bronze/raw/" directory for CSV files and stores the names in a list.
-# That list is now a global variable.
-csv_files = [f for f in os.listdir("data/bronze/raw/local") if f.endswith('.csv')]
-globals()['csv_files'] = csv_files
+def fetch_files(url):
+    """Recursively fetch all CSV files from GitHub."""
+    response = requests.get(url, timeout=30)  # 30 seconds timeout
+    response.raise_for_status()
 
-def extract_csv(file_name: str) -> pd.DataFrame:
-    """
-    Extract data from a CSV file.
+    for item in response.json():
+        if item["type"] == "dir":
+            fetch_files(item["url"])
+        elif item["name"].endswith(".csv"):
+            content = requests.get(item["download_url"], timeout=30).text
+            output_path = OUTPUT_DIR / item["name"]
+            output_path.write_text(content)
+            print(f"✓ {item['name']}")
 
-    Args:
-        file_name (str): The name of the CSV file.
-
-    Returns:
-        pd.DataFrame: The extracted data as a DataFrame.
-    """
-    df_name = file_name.replace('.csv', '')
-    df_internal = pd.read_csv(f"data/bronze/raw/local/{file_name}")
-    globals()[f"df_{df_name}"] = df_internal
-    return df_internal
-
-
-# Example usage:
 if __name__ == "__main__":
-    print(f"CSV files found: {csv_files}")
-    for file in csv_files:
-        df = extract_csv(file)
-        print(f"\nLoaded {file}:")
-        print(df.head())
+    fetch_files(API_URL)
+# End-of-file (EOF)
