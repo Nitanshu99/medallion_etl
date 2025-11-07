@@ -1,13 +1,5 @@
 """This module loads transformed JSONL DataFrames to Parquet files."""
 import os
-import sys
-from pathlib import Path
-
-# Get the project root and add to path
-project_root = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(project_root))
-os.chdir(project_root)
-
 from bronze.transform.jsonl_transformer import transform_jsonl, jsonl_files
 
 # Create parquet directory if it doesn't exist
