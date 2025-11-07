@@ -9,7 +9,7 @@ os.chdir(project_root)
 
 # Reads "data/bronze/raw/" directory for CSV files and stores the names in a list.
 # That list is now a global variable.
-csv_files = [f for f in os.listdir("data/bronze/raw/") if f.endswith('.csv')]
+csv_files = [f for f in os.listdir("data/bronze/raw/local") if f.endswith('.csv')]
 globals()['csv_files'] = csv_files
 
 def extract_csv(file_name: str) -> pd.DataFrame:
@@ -23,7 +23,7 @@ def extract_csv(file_name: str) -> pd.DataFrame:
         pd.DataFrame: The extracted data as a DataFrame.
     """
     df_name = file_name.replace('.csv', '')
-    df_internal = pd.read_csv(f"data/bronze/raw/{file_name}")
+    df_internal = pd.read_csv(f"data/bronze/raw/local/{file_name}")
     globals()[f"df_{df_name}"] = df_internal
     return df_internal
 
