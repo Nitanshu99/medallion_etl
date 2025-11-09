@@ -1,6 +1,5 @@
-import os
+""" --- PARQUET I/O MANAGER (Fixed) ---"""
 import pandas as pd
-from pathlib import Path
 from dagster import ConfigurableResource, UPathIOManager, io_manager, EnvVar
 from upath import UPath
 
@@ -10,7 +9,9 @@ class ParquetIOManager(UPathIOManager):
     Handles the I/O for pandas DataFrames as Parquet files.
     This version includes all fixes.
     """
-    
+    extension: str = ".parquet"
+
+
     def _get_path_without_extension(self, context) -> UPath:
         """
         Build the output path from the asset key.
@@ -23,10 +24,10 @@ class ParquetIOManager(UPathIOManager):
         """Saves the DataFrame to the parquet file path."""
         if not isinstance(obj, pd.DataFrame):
             raise TypeError(f"Expected pd.DataFrame, got {type(obj)}")
-        
+
         # Use UPath's mkdir method
         path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         context.log.info(f"Saving parquet to {path}")
         # pd.to_parquet can handle a UPath object, but we'll
         # explicitly cast to str for safety.
@@ -35,7 +36,7 @@ class ParquetIOManager(UPathIOManager):
     def load_from_path(self, context, path: UPath) -> pd.DataFrame:
         """Loads a DataFrame from a parquet file path."""
         context.log.info(f"Loading parquet from {path}")
-        
+
         # --- FIX 1: pd.read_parquet needs a string, not a UPath ---
         return pd.read_parquet(str(path))
 
@@ -44,13 +45,15 @@ class ParquetIOManager(UPathIOManager):
     description="An I/O manager that stores/loads DataFrames as parquet files."
 )
 def parquet_io_manager(init_context):
+    """Factory function for ParquetIOManager with configuration."""
     base_path_str = init_context.resource_config["base_path"]
-    
+
     # --- FIX 2: The parent class UPathIOManager takes 'base_path' ---
     return ParquetIOManager(base_path=UPath(base_path_str))
 
 # --- PATH CONFIG (Correct) ---
 class PathConfig(ConfigurableResource):
+    """Provides all the necessary paths for the Medallion architecture."""
     raw_local_path: str = "data/bronze/raw/local"
     raw_azure_path: str = "data/bronze/raw/azure"
     bronze_parquet_path: str = "data/bronze/parquet"
@@ -59,4 +62,5 @@ class PathConfig(ConfigurableResource):
 
 # --- AZURE RESOURCE (Correct) ---
 class AzureConfig(ConfigurableResource):
+    """Provides the Azure SAS URL from environment variable."""
     sas_url: str = EnvVar("AZURE_SAS_URL")

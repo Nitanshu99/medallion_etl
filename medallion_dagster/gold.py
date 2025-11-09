@@ -1,3 +1,4 @@
+""" --- GOLD ASSETS (Fixed) ---"""
 import pandas as pd
 from dagster import asset, AssetKey, AssetIn
 from gold.transform.transform_aov import calculate_aov_by_store_month
@@ -9,10 +10,11 @@ from gold.transform.transform_tickets import calculate_orders_ticket_summary
         "in_orders": AssetIn(key=AssetKey(["silver", "orders"])),
         "in_stores": AssetIn(key=AssetKey(["silver", "stores"]))
     },
-    group_name="gold", 
+    group_name="gold",
     io_manager_key="gold_io_manager"
 )
 def gold_aov_by_store_month(in_orders: pd.DataFrame, in_stores: pd.DataFrame) -> pd.DataFrame:
+    """Calculates the Average Order Value (AOV) by store and month."""
     return calculate_aov_by_store_month(in_orders, in_stores)
 
 @asset(
@@ -23,7 +25,7 @@ def gold_aov_by_store_month(in_orders: pd.DataFrame, in_stores: pd.DataFrame) ->
         "in_customers": AssetIn(key=AssetKey(["silver", "customers"])),
         "in_stores": AssetIn(key=AssetKey(["silver", "stores"]))
     },
-    group_name="gold", 
+    group_name="gold",
     io_manager_key="gold_io_manager"
 )
 def gold_orders_ticket_summary(
@@ -32,6 +34,7 @@ def gold_orders_ticket_summary(
     in_customers: pd.DataFrame,
     in_stores: pd.DataFrame
 ) -> pd.DataFrame:
+    """Generates a summary of orders and their associated support tickets."""
     return calculate_orders_ticket_summary(
         in_orders,
         in_tickets,

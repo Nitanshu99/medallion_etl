@@ -16,8 +16,8 @@ from medallion_dagster.gold import gold_assets
 
 # Import our resources
 from medallion_dagster.resources import (
-    PathConfig, 
-    AzureConfig, 
+    PathConfig,
+    AzureConfig,
     parquet_io_manager
 )
 
@@ -25,6 +25,7 @@ from medallion_dagster.resources import (
 all_assets = [*bronze_assets, *silver_assets, *gold_assets]
 
 # --- 1. Define Jobs ---
+# pylint: disable=assignment-from-no-return
 all_assets_job = define_asset_job(
     name="full_medallion_pipeline_job",
     selection=AssetSelection.all()
@@ -49,7 +50,7 @@ resources_def = {
     "gold_io_manager": parquet_io_manager.configured(
         {"base_path": PathConfig().gold_path}
     ),
-    
+
     # Resources our assets need
     "paths": PathConfig(), # Provides all paths
     "azure": AzureConfig(), # Provides the SAS URL from .env
