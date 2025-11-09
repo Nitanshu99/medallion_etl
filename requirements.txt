@@ -6,3 +6,4 @@ azure-identity
 dagster
 dagster-webserver
 python-dotenv
+duckdb
