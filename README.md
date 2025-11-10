@@ -163,6 +163,68 @@ This will launch the Dagit UI at **http://127.0.0.1:3000**.
 
 You can also materialize individual assets, view the pipeline structure, and monitor runs from this interface. The main pipeline definition (`defs`) is located in `definitions.py`.
 
+The Lineage Tab will show you the following assets:
+
+```mermaid
+flowchart LR
+    subgraph bronze_extract [bronze_extract]
+        raw_csv_files
+        raw_jsonl_files
+    end
+
+    subgraph bronze [bronze]
+        b_raw_stores[raw_stores]
+        b_raw_items[raw_items]
+        b_raw_customers[raw_customers]
+        b_raw_orders[raw_orders]
+        b_raw_products[raw_products]
+        b_raw_supplies[raw_supplies]
+        b_support_tickets[support_tickets]
+    end
+
+    subgraph silver [silver]
+        s_stores[stores]
+        s_order_items[order_items]
+        s_customers[customers]
+        s_orders[orders]
+        s_support_tickets[support_tickets]
+        s_products[products]
+        s_supplies[supplies]
+    end
+
+    subgraph gold [gold]
+        g_aov[aov_by_store_month]
+        g_summary[orders_summary]
+    end
+
+    %% Bronze Extract to Bronze
+    raw_csv_files --> b_raw_stores
+    raw_csv_files --> b_raw_items
+    raw_csv_files --> b_raw_customers
+    raw_csv_files --> b_raw_orders
+    raw_csv_files --> b_raw_products
+    raw_csv_files --> b_raw_supplies
+    raw_jsonl_files --> b_support_tickets
+
+    %% Bronze to Silver
+    b_raw_stores --> s_stores
+    b_raw_items --> s_order_items
+    b_raw_customers --> s_customers
+    b_raw_orders --> s_orders
+    b_raw_products --> s_products
+    b_raw_supplies --> s_supplies
+    b_support_tickets --> s_support_tickets
+
+    %% Silver to Gold
+    s_stores --> g_aov
+    s_order_items --> g_aov
+    s_orders --> g_aov
+
+    s_customers --> g_summary
+    s_orders --> g_summary
+    s_support_tickets --> g_summary
+    ```
+
 ### 2. Running Standalone Scripts (If, Dagster fails)
 
 You can also run the ETL process for each layer manually.
