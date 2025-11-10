@@ -79,7 +79,6 @@ flowchart TB
      GitHub:::source
      Azure:::source
      E1:::layer
-     E1:::layer
      T1:::layer
      L1:::layer
      BronzeData:::datastore
@@ -167,12 +166,12 @@ The Lineage Tab will show you the following assets:
 
 ```mermaid
 flowchart LR
-    subgraph bronze_extract [bronze_extract]
-        raw_csv_files
-        raw_jsonl_files
+    subgraph bronze_extract["bronze_extract"]
+        raw_csv_files[raw_csv_files]
+        raw_jsonl_files[raw_jsonl_files]
     end
 
-    subgraph bronze ["bronze"]
+    subgraph bronze["bronze"]
         b_raw_stores[raw_stores]
         b_raw_items[raw_items]
         b_raw_customers[raw_customers]
@@ -182,7 +181,7 @@ flowchart LR
         b_support_tickets[support_tickets]
     end
 
-    subgraph silver ["silver"]
+    subgraph silver["silver"]
         s_stores[stores]
         s_order_items[order_items]
         s_customers[customers]
@@ -192,7 +191,7 @@ flowchart LR
         s_supplies[supplies]
     end
 
-    subgraph gold ["gold"]
+    subgraph gold["gold"]
         g_aov[aov_by_store_month]
         g_summary[orders_summary]
     end
@@ -223,9 +222,9 @@ flowchart LR
     s_customers --> g_summary
     s_orders --> g_summary
     s_support_tickets --> g_summary
-    ```
+```
 
-### 2. Running Standalone Scripts (If, Dagster fails)
+### 2. Running Standalone Scripts (If Dagster fails)
 
 You can also run the ETL process for each layer manually.
 
