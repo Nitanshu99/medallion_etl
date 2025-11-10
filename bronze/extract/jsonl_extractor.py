@@ -21,6 +21,8 @@ def download_azure_jsonl(url: str, local_directory: str = "./data"):
         local_directory (str): Local directory to save files (default: ./data).
     """
 
+    os.makedirs(local_directory, exist_ok=True)
+
     # Create a ContainerClient using the SAS URL
     container_client = ContainerClient.from_container_url(url)
 
