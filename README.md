@@ -162,7 +162,7 @@ This will launch the Dagit UI at **http://127.0.0.1:3000**.
 
 You can also materialize individual assets, view the pipeline structure, and monitor runs from this interface. The main pipeline definition (`defs`) is located in `definitions.py`.
 
-### 2. Running Standalone Scripts
+### 2. Running Standalone Scripts (If, Dagster fails)
 
 You can also run the ETL process for each layer manually.
 
