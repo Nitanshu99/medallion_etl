@@ -13,6 +13,7 @@ All data at rest is stored in Parquet format.
 2. [Setup](#setup)
 3. [How to Run](#how-to-run)
 4. [How to Query Data](#how-to-query-data)
+5. [Layer-Specific Documentation](#layer-specific-documentation)
 
 ## Architecture
 
@@ -218,3 +219,10 @@ sql> SELECT * FROM aov_by_store_month LIMIT 5;
 
 - Type `.vertical` for a readable list view (default) or `.horizontal` for a table view.
 - Type `q` or `exit` to quit.
+
+## Layer-Specific Documentation
+
+For a detailed breakdown of the transformation logic, business rules, and schemas for the Silver and Gold layers, please refer to their dedicated README files:
+
+* [**Silver Layer README**](./silver/SILVER_README.md)
+* [**Gold Layer README**](./gold/GOLD_README.md)
