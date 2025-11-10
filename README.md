@@ -6,6 +6,8 @@ The pipeline ingests raw data from multiple sources (GitHub CSVs and Azure Blob 
 
 All data at rest is stored in Parquet format.
 
+**Note:** Python 3.12.9 is required to run this project.
+
 ## Table of Contents
 1. [Architecture](#architecture)
 2. [Setup](#setup)
@@ -108,8 +110,18 @@ flowchart TB
 2. **Create and activate a virtual environment:**
 
    ```sh
-   python3.12 -m venv .venv
-   source .venv/bin/activate
+    # Create virtual environment (all platforms)
+    python3.12 -m venv .venv
+   
+    # Activate virtual environment
+    # For Linux/macOS:
+    source .venv/bin/activate
+   
+    # For Windows (Command Prompt):
+    .venv\Scripts\activate.bat
+   
+    # For Windows (PowerShell):
+    .venv\Scripts\Activate.ps1
    ```
 
 3. **Install dependencies:**
@@ -140,7 +152,15 @@ Use the Dagster webserver to visualize and run the pipeline:
 dagster dev -f definitions.py
 ```
 
-This will launch the Dagit UI, where you can materialize assets, view the pipeline, and monitor runs. The main pipeline definition (`defs`) is located in `definitions.py`.
+This will launch the Dagit UI at **http://127.0.0.1:3000**. 
+
+**To run the entire pipeline:**
+1. Open your browser and navigate to http://127.0.0.1:3000
+2. Go to the **Lineage** tab on the Left side of the interface
+3. Locate the **Materialize all** button on the extreme Right(Black)
+4. Click it to run the entire pipeline
+
+You can also materialize individual assets, view the pipeline structure, and monitor runs from this interface. The main pipeline definition (`defs`) is located in `definitions.py`.
 
 ### 2. Running Standalone Scripts
 
@@ -149,19 +169,19 @@ You can also run the ETL process for each layer manually.
 1. **Run the Bronze layer:**
 
    ```sh
-   python bronze/run_bronze.py
+   python -m bronze.run_bronze
    ```
 
 2. **Run the Silver layer:**
 
    ```sh
-   python silver/run_silver.py
+   python -m silver.run_silver
    ```
 
 3. **Run the Gold layer:**
 
    ```sh
-   python gold/run_gold.py
+   python -m gold.run_gold
    ```
 
 ## How to Query Data
