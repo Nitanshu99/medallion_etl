@@ -172,7 +172,7 @@ flowchart LR
         raw_jsonl_files
     end
 
-    subgraph bronze [bronze]
+    subgraph bronze ["bronze"]
         b_raw_stores[raw_stores]
         b_raw_items[raw_items]
         b_raw_customers[raw_customers]
@@ -182,7 +182,7 @@ flowchart LR
         b_support_tickets[support_tickets]
     end
 
-    subgraph silver [silver]
+    subgraph silver ["silver"]
         s_stores[stores]
         s_order_items[order_items]
         s_customers[customers]
@@ -192,7 +192,7 @@ flowchart LR
         s_supplies[supplies]
     end
 
-    subgraph gold [gold]
+    subgraph gold ["gold"]
         g_aov[aov_by_store_month]
         g_summary[orders_summary]
     end
